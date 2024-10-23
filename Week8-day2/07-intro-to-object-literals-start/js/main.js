@@ -59,24 +59,8 @@ const addTodo = (todoObject) => {
   // TODO: Render the todos
 };
 
-const renderOneTodo = (todo, index) => {
-  // render the todo item
-  let newTodoHTML = `
-        <li class="list-group-item">
-            <input class="form-check-input todo-status"
-                data-todo-id="${index}"
-                type="checkbox"
-                value="todo-${index}"
-                COMPLETE HERE>
-            ${todo.description}
-        </li>`;
-  todoList.innerHTML += newTodoHTML;
-};
-
 const renderTodos = () => {
   todoList.innerHTML = "";
-
-  todos.forEach(renderOneTodo);
 
   todos.forEach((todo, index) => {
     // render the todo item
