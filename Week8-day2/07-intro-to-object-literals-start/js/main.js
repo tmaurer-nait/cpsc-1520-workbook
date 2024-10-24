@@ -36,7 +36,6 @@ todoForm.addEventListener("submit", (event) => {
   };
 
   // add the todo to the list
-
   addTodo(newTodo);
 
   // reset the form
@@ -48,11 +47,15 @@ todoList.addEventListener("change", (event) => {
   // get the checkbox element
   let todoCheckbox = event.target;
   let todoIndex = todoCheckbox.getAttribute("data-todo-id");
-  console.log(todoIndex);
-  // See if the checkbox is checked
+
+  // Select the clicked todo from todos array
+  let selectedTodo = todos[todoIndex];
 
   // Update the todo in the list of todos
+  selectedTodo.complete = !selectedTodo.complete;
+
   // Recalculate the number of completed todos
+  calculateCompleteCount();
 });
 
 let todos = [
@@ -66,6 +69,28 @@ let todos = [
   },
 ];
 
+const addToComplete = (previousValue, currentTodo) => {
+  // check if currentTodo is complete
+  if (currentTodo.complete) {
+    // if complete add 1 to previous value
+    return previousValue + 1;
+  }
+  // else do nothing
+  return previousValue;
+};
+
+const calculateCompleteCount = () => {
+  let initialValue = 0;
+
+  // Count the number of completed todos
+  let numberOfCompleteTodos = todos.reduce(addToComplete, initialValue);
+
+  console.log(numberOfCompleteTodos);
+
+  // Display number of completed todos as a percentage
+  todoCount.innerHTML = `${(numberOfCompleteTodos / todos.length) * 100}% done`;
+};
+
 const addTodo = (todoObject) => {
   todos.push(todoObject);
 
@@ -74,6 +99,7 @@ const addTodo = (todoObject) => {
 };
 
 const renderTodos = () => {
+  calculateCompleteCount();
   todoList.innerHTML = "";
 
   todos.forEach((todo, index) => {
