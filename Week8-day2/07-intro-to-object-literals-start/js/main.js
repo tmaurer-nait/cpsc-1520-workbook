@@ -35,11 +35,24 @@ todoForm.addEventListener("submit", (event) => {
     complete: false,
   };
 
-  // TODO: add the todo to the list
+  // add the todo to the list
 
-  console.log(newTodo);
+  addTodo(newTodo);
 
-  // TODO: reset the form
+  // reset the form
+  todoDescriptionElement.value = "";
+});
+
+// Listen to changes to the todoList
+todoList.addEventListener("change", (event) => {
+  // get the checkbox element
+  let todoCheckbox = event.target;
+  let todoIndex = todoCheckbox.getAttribute("data-todo-id");
+  console.log(todoIndex);
+  // See if the checkbox is checked
+
+  // Update the todo in the list of todos
+  // Recalculate the number of completed todos
 });
 
 let todos = [
@@ -56,13 +69,21 @@ let todos = [
 const addTodo = (todoObject) => {
   todos.push(todoObject);
 
-  // TODO: Render the todos
+  // Render the todos
+  renderTodos();
 };
 
 const renderTodos = () => {
   todoList.innerHTML = "";
 
   todos.forEach((todo, index) => {
+    // If you don't want to use the ternary below replace it with
+    // ${checked} and uncomment this code
+    // let checked = "";
+    // if (todo.complete) {
+    //   checked = "checked";
+    // }
+
     // render the todo item
     let newTodoHTML = `
         <li class="list-group-item">
@@ -70,7 +91,7 @@ const renderTodos = () => {
                 data-todo-id="${index}"
                 type="checkbox"
                 value="todo-${index}"
-                COMPLETE HERE>
+                ${todo.complete ? "checked" : ""}>
             ${todo.description}
         </li>`;
     todoList.innerHTML += newTodoHTML;
