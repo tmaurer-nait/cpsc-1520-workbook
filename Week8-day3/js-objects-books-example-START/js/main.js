@@ -36,6 +36,7 @@ Sample object in the array of books returned from getAllBooks:
   "language":"eng",
   "numberOfRatings": 652}
 */
+
 function getAllBooks() {
   return [
     {
@@ -991,10 +992,116 @@ function getAllBooks() {
   ];
 }
 
-const renderBooks = (bookList) => {};
+const renderBooks = (bookList) => {
+  // Reset the table to empty
+  tableBody.innerHTML = "";
 
-const getAuthors = (bookList) => {};
+  // Iterate through book list
+  bookList.forEach((book) => {
+    // create a new template html
+    let newBook = `
+    <tr>
+      <td>${book.bookId}</td>
+      <td>${book.title}</td>
+      <td>${book.author}</td>
+      <td>${book.rating}</td>
+      <td>${book.numberOfRatings}</td>
+    </tr>`;
+    // append html to table body
+    tableBody.innerHTML += newBook;
+  });
 
-const getBooksFilter = (filterQuery, objectKey, bookList) => {};
+  /*<tr>
+      <td>Insert book id here</td>
+      <td>Insert Title here</td>
+      <td>Insert Author here</td>
+      <td>Insert Rating here</td>
+      <td>Insert Number Of Ratings here</td>
+    </tr> */
+};
 
-const renderAuthorOptions = () => {};
+const getAuthors = (bookList) => {
+  // Use map to get all authors from the given book list
+  let authorsList = bookList.map((book) => {
+    return book.author;
+  });
+
+  // use filter to get disctint authors from the authors list
+  let distinctAuthors = authorsList.filter((author, index) => {
+    let shouldKeepAuthor = authorsList.indexOf(author) === index;
+    return shouldKeepAuthor;
+  });
+  // Sort the authors list
+  distinctAuthors = distinctAuthors.sort();
+  // return the authors list
+  return distinctAuthors;
+};
+
+// filterQuery is what the user types in to search
+// objectKey is the field of the book object we will filter on
+// bookList is the list of books to filter
+const getBooksFilter = (filterQuery, objectKey, bookList) => {
+  // Lowercase the filter
+  let lowerCaseFilter = filterQuery.toLowerCase();
+  // filter through bookList
+  let filteredBooks = bookList.filter((book) => {
+    // return true if book contains the filter at the object key
+    let shouldIncludeBook = book[objectKey]
+      .toLowerCase()
+      .includes(lowerCaseFilter);
+    return shouldIncludeBook;
+  });
+
+  return filteredBooks;
+};
+
+const renderAuthorOptions = () => {
+  // Get the author select element
+  let authorSelect = document.querySelector("#author-select");
+
+  // get all authors
+  let authors = getAuthors(allBooks);
+
+  // create an option for each author
+  authors.forEach((author) => {
+    // create the template html
+    let authorOption = `<option value="${author}">${author}</option>`;
+    // add the html to the select
+    authorSelect.innerHTML += authorOption;
+  });
+};
+
+// Main Section
+let tableBody = document.querySelector("#book-rows");
+let bookFilterForm = document.querySelector("#books-filter-form");
+let allBooks = getAllBooks();
+
+renderBooks(allBooks);
+renderAuthorOptions();
+
+bookFilterForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  // get the user input
+  let titleQueryElement = event.target.elements["filter-query"];
+  let authorElement = event.target.elements["author"];
+
+  let titleValue = titleQueryElement.value;
+  let authorValue = authorElement.value;
+
+  // create a subset of books
+  let bookSubset = getAllBooks();
+
+  // filter the subset by title
+  if (titleValue != "") {
+    bookSubset = getBooksFilter(titleValue, "title", bookSubset);
+  }
+
+  // filter the subset by author
+  if (authorValue != "") {
+    bookSubset = getBooksFilter(authorValue, "author", bookSubset);
+  }
+
+  // render the subset
+  renderBooks(bookSubset);
+});
