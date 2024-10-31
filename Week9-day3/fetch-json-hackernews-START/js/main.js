@@ -42,6 +42,8 @@ const loadStoryIds = () => {
       return response.json();
     })
     .then((storyIds) => {
+      allStoriesElement.innerHTML = "";
+
       // then do something with the ids
       storyIds.forEach((storyId) => {
         loadStory(storyId);
@@ -87,11 +89,15 @@ const renderStory = (storyObject) => {
 
 // takes in a timestamp, returns a readable date
 const convertTimeStampToDate = (timestamp) => {
-  let date = new Date(); // give this milliseconds
+  let date = new Date(timestamp * 1000); // give this milliseconds
 
-  let readableDate = ``; // toLocaleDateString, toLocaleTimeString
+  let readableDate = `${date.toLocaleDateString(
+    "en-CA"
+  )} ${date.toLocaleTimeString("en-CA")}`; // toLocaleDateString, toLocaleTimeString
   return readableDate;
 };
 
 // Hook this up to the button click event
-loadStoryIds();
+getStoriesButton.addEventListener("click", () => {
+  loadStoryIds();
+});
