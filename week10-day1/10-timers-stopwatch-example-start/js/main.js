@@ -34,6 +34,8 @@ let timerValue = document.querySelector(".timer-value");
 let currentTime = 0;
 let isStopWatchRunning = false;
 let timerInterval = null;
+let endTimeOfLastLap = 0;
+let currentLap = 0;
 
 // Add event listener for start button
 startButton.addEventListener("click", () => {
@@ -43,6 +45,7 @@ startButton.addEventListener("click", () => {
 
 // Create a function named startTimer
 const startTimer = () => {
+  if (isStopWatchRunning) return;
   // set isStopWatchRunning to true
   isStopWatchRunning = true;
   // use setInterval to create a timer
@@ -70,18 +73,33 @@ stopButton.addEventListener("click", () => {
 
 // add a click listener to the lap button
 // call the addNewLap function
+lapButton.addEventListener("click", () => {
+  addNewLap();
+});
 
 const addNewLap = () => {
   // calculate the current lap time
+  let currentLapTime = currentTime - endTimeOfLastLap;
   // increment the current lap
+  currentLap += 1;
+  endTimeOfLastLap = currentTime;
+
   // add the new lap to the laps element html
+  let templateHTML = `<li class="list-group-item">Lap ${currentLap}: ${formatTime(
+    currentLapTime
+  )}</li>`;
+  lapsElement.innerHTML += templateHTML;
+};
+
+const formatTime = (time) => {
+  // Get the seconds from the currentTime
+  let first = Math.floor(time / 100);
+  // get the hundredths from the current time
+  let second = time % 100;
+  // return the formatted time
+  return `${first}:${second}`;
 };
 
 const setTimerValue = () => {
-  // Get the seconds from the currentTime
-  let first = Math.floor(currentTime / 100);
-  // get the hundredths from the current time
-  let second = currentTime % 100;
-  // update the timer value html to display the currentTime
-  timerValue.innerText = `${first}:${second}`;
+  timerValue.innerText = formatTime(currentTime);
 };
