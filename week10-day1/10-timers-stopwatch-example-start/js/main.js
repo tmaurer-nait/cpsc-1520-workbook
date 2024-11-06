@@ -77,6 +77,23 @@ lapButton.addEventListener("click", () => {
   addNewLap();
 });
 
+const addListItemNode = (lap, lapTime) => {
+  // Create a list item node
+  let lapItem = document.createElement("li");
+
+  // Add the class to the listItem
+  lapItem.classList.add("list-group-item");
+
+  // Create the text node
+  let lapText = document.createTextNode(`Lap: ${lap}: ${formatTime(lapTime)}`);
+
+  // Append the text to the node
+  lapItem.appendChild(lapText);
+
+  // Append the node to the list
+  lapsElement.appendChild(lapItem);
+};
+
 const addNewLap = () => {
   // calculate the current lap time
   let currentLapTime = currentTime - endTimeOfLastLap;
@@ -85,10 +102,11 @@ const addNewLap = () => {
   endTimeOfLastLap = currentTime;
 
   // add the new lap to the laps element html
-  let templateHTML = `<li class="list-group-item">Lap ${currentLap}: ${formatTime(
-    currentLapTime
-  )}</li>`;
-  lapsElement.innerHTML += templateHTML;
+  // let templateHTML = `<li class="list-group-item">Lap ${currentLap}: ${formatTime(
+  //   currentLapTime
+  // )}</li>`;
+  // lapsElement.innerHTML += templateHTML;
+  addListItemNode(currentLap, currentLapTime);
 };
 
 const formatTime = (time) => {
