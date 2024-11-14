@@ -17,20 +17,29 @@ randomDogButton.addEventListener("click", () => {
   getRandomDog();
 });
 
-const getRandomDog = () => {
-  // Fetch the dog url
+// const getRandomDog = () => {
+//   // Fetch the dog url
+//   let dogURL = "https://dog.ceo/api/breeds/image/random";
+//   fetch(dogURL)
+//     .then((response) => {
+//       console.log(response.status);
+//       // then get the json body from the response
+//       return response.json();
+//     })
+//     .then((dogObject) => {
+//       console.log(dogObject);
+//       // then display the dog image
+//       displayDogImage(dogObject.message);
+//     });
+// };
+
+const getRandomDog = async () => {
   let dogURL = "https://dog.ceo/api/breeds/image/random";
-  fetch(dogURL)
-    .then((response) => {
-      console.log(response.status);
-      // then get the json body from the response
-      return response.json();
-    })
-    .then((dogObject) => {
-      console.log(dogObject);
-      // then display the dog image
-      displayDogImage(dogObject.message);
-    });
+  let response = await fetch(dogURL);
+  let dogObject = await response.json();
+  // Once the above is done, do the below
+  console.log(dogObject);
+  displayDogImage(dogObject.message);
 };
 
 const displayDogImage = (imageUrl) => {
