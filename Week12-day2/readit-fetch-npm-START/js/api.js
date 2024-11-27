@@ -19,4 +19,18 @@ const getAllPosts = () => {
 
 // I can call the above like this: getAllPosts().then((posts) => {DO SOMETHING})
 
+const makeNewPost = (title, url, score) => {
+  return fetch(`${BASE_URL}/posts/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, url, score }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      return data;
+    });
+};
+
 export { getAllPosts };

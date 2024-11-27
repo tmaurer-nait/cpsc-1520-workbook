@@ -745,7 +745,6 @@ const downAnimation = (element)=>{
 // Store the BASE URL for the backend (usually this would be changeable)
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// I can call the above like this: getAllPosts().then((posts) => {DO SOMETHING})
 parcelHelpers.export(exports, "getAllPosts", ()=>getAllPosts);
 const BASE_URL = "http://localhost:3000";
 // THIS WILL BE THE URL FOR GETTING POSTS
@@ -756,6 +755,22 @@ const getAllPosts = ()=>{
         return response.json();
     }).then((posts)=>{
         return posts;
+    });
+};
+// I can call the above like this: getAllPosts().then((posts) => {DO SOMETHING})
+const makeNewPost = (title, url, score)=>{
+    return fetch(`${BASE_URL}/posts/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            title,
+            url,
+            score
+        })
+    }).then((response)=>response.json()).then((data)=>{
+        return data;
     });
 };
 
