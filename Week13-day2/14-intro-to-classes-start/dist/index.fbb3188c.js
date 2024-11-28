@@ -670,7 +670,7 @@ newTopicForm.addEventListener("submit", (event)=>{
     descriptionElement.value = "";
 });
 
-},{"bootstrap/dist/css/bootstrap.min.css":"i5LP7","./utils/card.js":"k3bE5"}],"i5LP7":[function() {},{}],"k3bE5":[function(require,module,exports,__globalThis) {
+},{"./utils/card.js":"k3bE5","bootstrap/dist/css/bootstrap.min.css":"i5LP7"}],"k3bE5":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Card", ()=>Card);
@@ -690,44 +690,47 @@ class Card {
         this.understoodListElement = document.querySelector(".understood-stickies");
         // When I create the card, add it to the to learn list
         this.render();
+        // Bind the event handlers
+        this.addEventListeners();
     }
     // This function adds this card to the to learn list
     render() {
         this.toLearnListElement.append(this.element);
     }
+    remove() {
+        // Remove this element from the DOM
+        this.element.remove();
+    }
+    moveToTop() {
+        // Move the element to the start
+        this.toLearnListElement.insertBefore(this.element, this.toLearnListElement.firstElementChild);
+    }
+    moveToUnderstood() {
+        // Move the element to the understood
+        this.understoodListElement.append(this.element);
+    }
+    addEventListeners() {
+        // Select the necessary elements
+        let cardBody = this.element.children[0];
+        let removeButton = cardBody.children[2];
+        let topButton = cardBody.children[3];
+        let understoodButton = cardBody.children[4];
+        // bind the remove button
+        removeButton.addEventListener("click", ()=>{
+            this.remove();
+        });
+        // bind the top priority button
+        topButton.addEventListener("click", ()=>{
+            this.moveToTop();
+        });
+        // bind the I get this button
+        understoodButton.addEventListener("click", ()=>{
+            this.moveToUnderstood();
+        });
+    }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../dom/card.js":"9N6C8"}],"gkKU3":[function(require,module,exports,__globalThis) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"9N6C8":[function(require,module,exports,__globalThis) {
+},{"../dom/card.js":"9N6C8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9N6C8":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createCardElement", ()=>createCardElement);
@@ -761,6 +764,36 @@ const createCardElement = ({ title, description })=>{
     return card;
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["iPmjX","bDbGG"], "bDbGG", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports,__globalThis) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"i5LP7":[function() {},{}]},["iPmjX","bDbGG"], "bDbGG", "parcelRequire94c2")
 
 //# sourceMappingURL=index.fbb3188c.js.map
