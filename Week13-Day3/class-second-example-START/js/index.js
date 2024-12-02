@@ -21,9 +21,43 @@ import { Balloon } from "./utils/balloon";
 let allBalloons = document.querySelector(".balloons");
 
 // TODO: REPLACE IN THE FUTURE
-let balloon = new Balloon();
-balloon.addToElement(allBalloons);
+// let balloon = new Balloon();
+// balloon.addToElement(allBalloons);
+
+let numBalloons = 0;
+let balloonRespawner = null;
 
 // TODO: Add multiple balloons
+const addBalloons = () => {
+  // Using a forloop
+  const MAX_BALLOONS = 10;
+  for (let i = 0; i < MAX_BALLOONS; i++) {
+    let balloon = new Balloon();
+    balloon.addToElement(allBalloons);
+    numBalloons++;
+  }
+};
+
+addBalloons();
 
 // TODO: Add event listeners to remove balloons
+document.addEventListener("click", (event) => {
+  if (event.target.classList.contains("single-balloon")) {
+    event.target.remove();
+    numBalloons--;
+    if (numBalloons === 0) {
+      clearInterval(balloonRespawner);
+    }
+  }
+});
+
+const respawnBalloons = () => {
+  // respawn a balloon every second
+  balloonRespawner = setInterval(() => {
+    let balloon = new Balloon();
+    balloon.addToElement(allBalloons);
+    numBalloons++;
+  }, 1000);
+};
+
+respawnBalloons();
