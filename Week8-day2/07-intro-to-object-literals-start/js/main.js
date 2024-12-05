@@ -111,15 +111,39 @@ const renderTodos = () => {
     // }
 
     // render the todo item
-    let newTodoHTML = `
-        <li class="list-group-item">
-            <input class="form-check-input todo-status"
-                data-todo-id="${index}"
-                type="checkbox"
-                value="todo-${index}"
-                ${todo.complete ? "checked" : ""}>
-            ${todo.description}
-        </li>`;
-    todoList.innerHTML += newTodoHTML;
+    // let newTodoHTML = `
+    //     <li class="list-group-item">
+    //         <input class="form-check-input todo-status"
+    //             data-todo-id="${index}"
+    //             type="checkbox"
+    //             value="todo-${index}"
+    //             ${todo.complete ? "checked" : ""}>
+    //         ${todo.description}
+    //     </li>`;
+
+    // Create the list item
+    let newTodoNode = document.createElement("li");
+    newTodoNode.classList.add("list-group-item");
+
+    // Create the input
+    let todoInput = document.createElement("input");
+    todoInput.classList.add("form-check-input", "todo-status");
+    todoInput.setAttribute("type", "checkbox");
+    todoInput.setAttribute("data-todo-id", `${index}`);
+    todoInput.setAttribute("value", `todo-${index}`);
+    // Option 1
+    // todoInput.setAttribute("checked", "true");
+    // Option 2
+    todoInput.checked = todo.complete;
+
+    // Create our text node
+    let textNode = document.createTextNode(todo.description);
+
+    // put everything together
+    newTodoNode.appendChild(todoInput);
+    newTodoNode.appendChild(textNode);
+    todoList.appendChild(newTodoNode);
   });
 };
+
+renderTodos();
